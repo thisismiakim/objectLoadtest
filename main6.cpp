@@ -27,62 +27,27 @@ std::vector<Triangle> loadTriangles(const std::string& filename)
         return triangles;
     }
 
-
-    std::string line;
-    char space = ' ';
-    while (std::getline(file, line) ) 
-    {
-
-        std::istringstream iss(line);
-        Triangle triangle;
-        std::string value;
-        
-        std::string word;
-        while(std::getline(iss, word, ' ')){
-
-        for (int i=0; i<3; i++)
+        std::string line;
+        int triangleCount = 0; 
+        while (std::getline(file, line)) 
         {
-            if (i==0){
-                // Read x, y, z for v1
-                std::getline(iss, value, ',');
-                triangle.v1.x = std::stold(value);
-                std::getline(iss, value, ',');
-                triangle.v1.y = std::stold(value);
-                std::getline(iss, value, ',');
-                triangle.v1.z = std::stold(value);
+            std::istringstream iss(line);
+            Triangle triangle;
+            char comma; // To discard the comma character
+
+            // Read x, y, z for v1
+            iss >> triangle.v1.x >> comma >> triangle.v1.y >> comma >> triangle.v1.z;
             
-            }
-            else if (i == 1){
+            // Read x, y, z for v2
+            iss >> triangle.v2.x >> comma >> triangle.v2.y >> comma >> triangle.v2.z;
+            
+            // Read x, y, z for v3
+            iss >> triangle.v3.x >> comma >> triangle.v3.y >> comma >> triangle.v3.z;
 
-                // Read x, y, z for v2
-                std::getline(iss, value, ',');
-                triangle.v2.x = std::stold(value);
-                std::getline(iss, value, ',');
-                triangle.v2.y = std::stold(value);
-                std::getline(iss, value, ',');
-                triangle.v2.z = std::stold(value);
-
-            }
-            else{
-                
-
-                // Read x, y, z for v3
-                std::getline(iss, value, ',');
-                triangle.v3.x = std::stold(value);
-                std::getline(iss, value, ',');
-                triangle.v3.y = std::stold(value);
-                std::getline(iss, value, ',');
-                triangle.v3.z = std::stold(value);
-
-            }
-
-            //std::getline(iss, value, ' ');
+            triangles.push_back(triangle);
         }
 
-        triangles.push_back(triangle);
-        }
 
-    }
     file.close();
 
     return triangles;
